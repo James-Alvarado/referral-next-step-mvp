@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Referral Next Step</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+          <h1>Referral Next Step</h1>
+          <p>
+            A simple tool that helps patients understand what to do after a referral is approved.
+          </p>
+        </div>
+      </header>
+
+    <main>
+        <section class="form-section">
+        <div class="container">
+          <h2>Check Your Referral</h2>
+          <p>Select your referral type to see the next step.</p>
+      
+          <label for="specialty">Specialist Type</label>
+          <select id="specialty">
+            <option value="">Choose a specialty</option>
+            <option value="cardiology">Cardiology</option>
+            <option value="dermatology">Dermatology</option>
+            <option value="gynecology">Gynecology</option>
+          </select>
+      
+          <button id="checkReferralBtn">Check Status</button>
+        </div>
+      </section>
+
+      <section class="result-section hidden" id="resultSection">
+        <div class="container">
+          <h2>Your Referral Status</h2>
+          <div class="result-card">
+            <p><strong>Status:</strong> Approved</p>
+            <p><strong>Specialty:</strong> <span id="resultSpecialty"></span></p>
+            <p id="nextStepMessage"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="providers-section hidden" id="providersSection">
+        <div class="container">
+          <h2>Example In-Network Providers</h2>
+          <ul id="providerList"></ul>
+        </div>
+      </section>
+
+      <section class="reminder-section hidden" id="reminderSection">
+        <div class="container">
+          <h2>Appointment Reminder</h2>
+          <p>Bring your insurance card, ID, and referral confirmation number if available.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+        <div class="container">
+          <p>This MVP is a prototype for improving patient follow-up and care navigation.</p>
+        </div>
+      </footer>
+      
+      <script src="js/script.js"></script>
+</body>
+</html>

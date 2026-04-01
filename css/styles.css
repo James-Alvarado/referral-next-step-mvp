@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f8fb;
+    color: #335f29;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero {
+    background-color: #dbeafe;
+    padding: 3rem 0;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .hero p {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .form-section,
+.result-section,
+.providers-section,
+.reminder-section {
+  padding: 2rem 0;
+}
+
+.form-section h2,
+.result-section h2,
+.providers-section h2,
+.reminder-section h2 {
+  margin-bottom: 1rem;
+}
+
+label,
+select,
+button {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+select,
+button {
+  padding: 0.8rem;
+  font-size: 1rem;
+}
+
+button {
+    background-color: #28e862;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  button:hover {
+    background-color: #1bb74a;
+  }
+
+  .result-card {
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(14, 104, 25, 0.08);
+  }
+
+  #providerList {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem 0;
+    background-color: #e5e7eb;
+    margin-top: 2rem;
+  }
+  
+  .hidden {
+    display: none;
+  }
