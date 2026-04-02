@@ -36,25 +36,14 @@ const providerData = {
   checkReferralBtn.addEventListener("click", function () {
     const selectedSpecialty = specialtySelect.value;
   
-    if (selectedSpecialty === "") {
-      alert("Please choose a specialty first.");
-      return;
-    }
-  
-    resultSpecialty.textContent =
-      selectedSpecialty.charAt(0).toUpperCase() + selectedSpecialty.slice(1);
-  
-    nextStepMessage.textContent = nextStepData[selectedSpecialty];
-  
-    providerList.innerHTML = "";
-  
-    providerData[selectedSpecialty].forEach(function (provider) {
-      const listItem = document.createElement("li");
-      listItem.textContent = provider;
-      providerList.appendChild(listItem);
-    });
-  
-    resultSection.classList.remove("hidden");
-    providersSection.classList.remove("hidden");
-    reminderSection.classList.remove("hidden");
+  const selectedInsurance = document.getElementById("insurance").value;
+
+if (selectedSpecialty === "" || selectedInsurance === "") {
+  alert("Please choose a specialty and insurance.");
+  return;
+} 
+localStorage.setItem("specialty", selectedSpecialty);
+localStorage.setItem("insurance", selectedInsurance);
+
+window.location.href = "results.html";
   });
