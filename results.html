@@ -16,20 +16,65 @@
 <main>
   <section class="result-section">
     <div class="container">
-      <h2>Approved Referral</h2>
-      <p id="resultInfo"></p>
+      <div class="result-card">
+        <h2>Approved Referral</h2>
+        <p id="resultInfo"></p>
+      </div>
+    </div>
+  </section>
 
-      <h3>Available Providers</h3>
-      <ul id="providerList"></ul>
+  <section class="providers-section">
+    <div class="container">
+      <h2>Choose Your Doctor</h2>
+      <div id="providerList" class="provider-options"></div>
+    </div>
+  </section>
 
-      <h3>Available Appointment Dates</h3>
-      <ul id="dateList"></ul>
+  <section class="calendar-section">
+    <div class="container">
+      <h2>Select an Appointment Date</h2>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+  </section>
 
-      <h3>Reminder</h3>
-      <p>Bring your insurance card and ID.</p>
+  <section class="times-section">
+    <div class="container">
+      <h2>Available Times</h2>
+      <div id="timeSlots" class="time-slots"></div>
+    </div>
+  </section>
+
+  <section class="booking-section">
+    <div class="container">
+      <button id="bookAppointmentBtn" class="hidden">Book the Appointment</button>
+    </div>
+  </section>
+
+  <section class="reminder-section">
+    <div class="container">
+      <h2>Remember</h2>
+      <p>Bring your insurance card, ID, and referral confirmation details if available.</p>
     </div>
   </section>
 </main>
+
+<div id="bookingModal" class="modal hidden">
+  <div class="modal-content">
+    <button id="closeModalBtn" class="close-modal-btn">×</button>
+    <h2>Appointment Confirmed</h2>
+    <p>Thank you for confirming your first appointment with your specialist doctor. Below are your appointment details:</p>
+
+    <p><strong>Specialty:</strong> <span id="modalSpecialty"></span></p>
+    <p><strong>Doctor:</strong> <span id="modalDoctor"></span></p>
+    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+    <p><strong>Time:</strong> <span id="modalTime"></span></p>
+
+    <h3>Remember</h3>
+    <p>Bring your insurance card, ID, and referral confirmation details if available.</p>
+
+    <p class="see-you-soon">See you soon.</p>
+  </div>
+</div>
 
 <script src="js/results.js"></script>
 </body>
