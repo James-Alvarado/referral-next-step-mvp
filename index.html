@@ -32,44 +32,22 @@
             <option value="cardiology">Cardiology</option>
             <option value="dermatology">Dermatology</option>
             <option value="gynecology">Gynecology</option>
+            <option value="infectious-disease">Infectious Disease</option>
+            <option value="endocrinology">Endocrinology</option>
           </select>
 
           <label for="insurance">Insurance Plan</label>
-<select id="insurance">
-  <option value="">Choose your insurance</option>
-  <option value="metroplus">MetroPlus</option>
-  <option value="aetna">Aetna</option>
-  <option value="medicaid">Medicaid</option>
-</select>
+          <select id="insurance">
+            <option value="">Choose your insurance</option>
+            <option value="metroplus">MetroPlus</option>
+            <option value="aetna">Aetna</option>
+            <option value="medicaid">Medicaid</option>
+          </select>
       
           <button id="checkReferralBtn">Check Status</button>
         </div>
       </section>
 
-      <section class="result-section hidden" id="resultSection">
-        <div class="container">
-          <h2>Your Referral Status</h2>
-          <div class="result-card">
-            <p><strong>Status:</strong> Approved</p>
-            <p><strong>Specialty:</strong> <span id="resultSpecialty"></span></p>
-            <p id="nextStepMessage"></p>
-          </div>
-        </div>
-      </section>
-
-      <section class="providers-section hidden" id="providersSection">
-        <div class="container">
-          <h2>Example In-Network Providers</h2>
-          <ul id="providerList"></ul>
-        </div>
-      </section>
-
-      <section class="reminder-section hidden" id="reminderSection">
-        <div class="container">
-          <h2>Appointment Reminder</h2>
-          <p>Bring your insurance card, ID, and referral confirmation number if available.</p>
-        </div>
-      </section>
     </main>
 
     <footer>
