@@ -1,66 +1,57 @@
-const checkReferralBtn = document.getElementById("checkReferralBtn");
-const languageSelect = document.getElementById("languageSelect");
-const specialtySelect = document.getElementById("specialty");
-const insuranceSelect = document.getElementById("insurance");
+const pageElements = {
+  languageSelect: document.getElementById("languageSelect"),
+  specialtySelect: document.getElementById("specialty"),
+  insuranceSelect: document.getElementById("insurance"),
+  checkReferralButton: document.getElementById("checkReferralBtn"),
+};
 
-const LANGUAGE_STORAGE_KEY = "selectedLanguage";
-const DEFAULT_LANGUAGE = "en";
+function applyLanguageToPage(language) {
+  const savedLanguage = appI18n.saveLanguage(language);
 
-function getSavedLanguage() {
-  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-
-  if (savedLanguage && translations[savedLanguage]) {
-    return savedLanguage;
-  }
-
-  return DEFAULT_LANGUAGE;
+  appI18n.syncLanguageSelect(pageElements.languageSelect, savedLanguage);
+  appI18n.applyTranslations(savedLanguage);
 }
 
-function getCurrentTranslations(language) {
-  return translations[language] || translations[DEFAULT_LANGUAGE];
+function getReferralFormValues() {
+  return {
+    specialty: pageElements.specialtySelect.value,
+    insurance: pageElements.insuranceSelect.value,
+  };
 }
 
-function applyTranslations(language) {
-  const currentTranslations = getCurrentTranslations(language);
-  const translatableElements = document.querySelectorAll("[data-i18n]");
+function showMissingSelectionAlert() {
+  const currentLanguage = appI18n.getLanguage();
+  const pageText = appI18n.getTranslations(currentLanguage);
 
-  document.documentElement.lang = language;
-
-  translatableElements.forEach((element) => {
-    const translationKey = element.dataset.i18n;
-    const translatedText = currentTranslations[translationKey];
-
-    if (translatedText) {
-      element.textContent = translatedText;
-    }
-  });
+  alert(pageText.chooseSpecialtyAndInsuranceAlert);
 }
 
-function setLanguage(language) {
-  const nextLanguage = translations[language] ? language : DEFAULT_LANGUAGE;
-
-  localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
-  languageSelect.value = nextLanguage;
-  applyTranslations(nextLanguage);
+function saveReferralFormValues(referralFormValues) {
+  localStorage.setItem("specialty", referralFormValues.specialty);
+  localStorage.setItem("insurance", referralFormValues.insurance);
 }
 
-setLanguage(getSavedLanguage());
+function handleLanguageChange() {
+  applyLanguageToPage(pageElements.languageSelect.value);
+}
 
-languageSelect.addEventListener("change", function () {
-  setLanguage(languageSelect.value);
-});
+function handleCheckReferral() {
+  const referralFormValues = getReferralFormValues();
 
-checkReferralBtn.addEventListener("click", function () {
-  const selectedSpecialty = specialtySelect.value;
-  const selectedInsurance = insuranceSelect.value;
-
-  if (selectedSpecialty === "" || selectedInsurance === "") {
-    alert("Please choose a specialty and insurance.");
+  if (!referralFormValues.specialty || !referralFormValues.insurance) {
+    showMissingSelectionAlert();
     return;
   }
 
-  localStorage.setItem("specialty", selectedSpecialty);
-  localStorage.setItem("insurance", selectedInsurance);
-
+  saveReferralFormValues(referralFormValues);
   window.location.href = "results.html";
-});
+}
+
+function initializeLandingPage() {
+  applyLanguageToPage(appI18n.getLanguage());
+
+  pageElements.languageSelect.addEventListener("change", handleLanguageChange);
+  pageElements.checkReferralButton.addEventListener("click", handleCheckReferral);
+}
+
+initializeLandingPage();

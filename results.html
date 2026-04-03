@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="resultsPageTitle">Referral Results</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -33,7 +34,7 @@
   <section class="result-section">
     <div class="container">
       <div class="result-card">
-        <h2 data-i18n="approvedReferral">Approved Referral</h2>
+        <h2 data-i18n="approvedReferral">Referral Approved</h2>
         <p id="resultInfo"></p>
       </div>
     </div>
@@ -41,28 +42,28 @@
 
   <section class="providers-section">
     <div class="container">
-      <h2 data-i18n="chooseDoctor">Choose Your Doctor</h2>
+      <h2 data-i18n="chooseDoctor">Choose a Doctor</h2>
       <div id="providerList" class="provider-options"></div>
     </div>
   </section>
 
   <section class="calendar-section">
     <div class="container">
-      <h2 data-i18n="selectDate">Select an Appointment Date</h2>
+      <h2 data-i18n="selectDate">Choose an Appointment Date</h2>
       <div id="calendarGrid" class="calendar-grid"></div>
     </div>
   </section>
 
   <section class="times-section">
     <div class="container">
-      <h2 data-i18n="availableTimes">Available Times</h2>
+      <h2 data-i18n="availableTimes">Choose a Time</h2>
       <div id="timeSlots" class="time-slots"></div>
     </div>
   </section>
 
   <section class="booking-section">
     <div class="container">
-      <button id="bookAppointmentBtn" class="hidden" data-i18n="bookAppointment">Book the Appointment</button>
+      <button id="bookAppointmentBtn" class="hidden" data-i18n="bookAppointment">Book Appointment</button>
     </div>
   </section>
 
@@ -72,7 +73,7 @@
   <div class="modal-content">
     <button id="closeModalBtn" class="close-modal-btn">×</button>
     <h2 data-i18n="appointmentConfirmed">Appointment Confirmed</h2>
-    <p data-i18n="modalThankYou">Thank you for confirming your first appointment with your specialist doctor. Below are your appointment details:</p>
+    <p data-i18n="modalThankYou">Your appointment is confirmed. Here are the details:</p>
 
     <p><strong data-i18n="specialty">Specialty:</strong> <span id="modalSpecialty"></span></p>
     <p><strong data-i18n="doctor">Doctor:</strong> <span id="modalDoctor"></span></p>
@@ -80,7 +81,7 @@
     <p><strong data-i18n="time">Time:</strong> <span id="modalTime"></span></p>
 
     <h3 data-i18n="remember">Remember</h3>
-    <p data-i18n="reminderText">Bring your insurance card, ID, and referral confirmation details if available.</p>
+    <p data-i18n="reminderText">Bring your insurance card, photo ID, and referral details if you have them.</p>
 
     <p class="see-you-soon" data-i18n="seeYouSoon">See you soon.</p>
   </div>

@@ -10,10 +10,15 @@
     <header class="hero">
         <div class="container">
           <div class="language-picker">
-            <label for="languageSelect" class="sr-only">Choose language</label>
+            <label for="languageSelect" class="sr-only" data-i18n="chooseLanguage">Choose language</label>
             <div class="language-select-control">
               <span class="language-icon" aria-hidden="true">🌐</span>
-              <select id="languageSelect" name="language" aria-label="Choose language">
+              <select
+                id="languageSelect"
+                name="language"
+                aria-label="Choose language"
+                data-i18n-aria-label="chooseLanguage"
+              >
                 <option value="en">English</option>
                 <option value="es">Español</option>
                 <option value="zh">中文</option>
@@ -22,11 +27,11 @@
           </div>
           <h1 data-i18n="heroTitle">Referral Next Step</h1>
           <p class="tagline" data-i18n="heroTagline">
-            Get clear next steps after your referral — fast and simple.
+            Get clear next steps after your referral, fast and simple.
           </p>
           
           <p data-i18n="heroDescription">
-            A simple tool that helps patients understand what to do after a referral is approved.
+            A simple tool to help patients know what to do after a referral is approved.
           </p>
         </div>
       </header>
@@ -35,27 +40,27 @@
         <section class="form-section">
         <div class="container">
           <h2 data-i18n="checkReferralHeading">Check Your Referral</h2>
-          <p data-i18n="checkReferralHelper">Select your referral type to see the next step.</p>
+          <p data-i18n="checkReferralHelper">Choose your specialty and insurance to see your next steps.</p>
       
-          <label for="specialty" data-i18n="specialistLabel">Specialist Type</label>
+          <label for="specialty" data-i18n="specialistLabel">Specialty</label>
           <select id="specialty">
             <option value="" data-i18n="chooseSpecialty">Choose a specialty</option>
-            <option value="cardiology">Cardiology</option>
-            <option value="dermatology">Dermatology</option>
-            <option value="gynecology">Gynecology</option>
-            <option value="infectious-disease">Infectious Disease</option>
-            <option value="endocrinology">Endocrinology</option>
+            <option value="cardiology" data-i18n="cardiologyName">Cardiology</option>
+            <option value="dermatology" data-i18n="dermatologyName">Dermatology</option>
+            <option value="gynecology" data-i18n="gynecologyName">Gynecology</option>
+            <option value="infectious-disease" data-i18n="infectiousDiseaseName">Infectious Disease</option>
+            <option value="endocrinology" data-i18n="endocrinologyName">Endocrinology</option>
           </select>
 
           <label for="insurance" data-i18n="insuranceLabel">Insurance Plan</label>
           <select id="insurance">
             <option value="" data-i18n="chooseInsurance">Choose your insurance</option>
-            <option value="metroplus">MetroPlus</option>
-            <option value="aetna">Aetna</option>
-            <option value="medicaid">Medicaid</option>
+            <option value="metroplus" data-i18n="metroplusName">MetroPlus</option>
+            <option value="aetna" data-i18n="aetnaName">Aetna</option>
+            <option value="medicaid" data-i18n="medicaidName">Medicaid</option>
           </select>
       
-          <button id="checkReferralBtn" data-i18n="checkStatusButton">Check Status</button>
+          <button id="checkReferralBtn" data-i18n="checkStatusButton">See Next Steps</button>
         </div>
       </section>
 

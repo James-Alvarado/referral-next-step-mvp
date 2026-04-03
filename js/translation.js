@@ -1,49 +1,54 @@
-/* global translations — load before script.js / results.js */
 const translations = {
   en: {
     pageTitle: "Referral Next Step",
     resultsPageTitle: "Referral Results",
     chooseLanguage: "Choose language",
     heroTitle: "Referral Next Step",
-    heroTagline: "Get clear next steps after your referral — fast and simple.",
+    heroTagline: "Get clear next steps after your referral, fast and simple.",
     heroDescription:
-      "A simple tool that helps patients understand what to do after a referral is approved.",
+      "A simple tool to help patients know what to do after a referral is approved.",
     checkReferralHeading: "Check Your Referral",
-    checkReferralHelper: "Select your referral type to see the next step.",
-    specialistLabel: "Specialist Type",
+    checkReferralHelper:
+      "Choose your specialty and insurance to see your next steps.",
+    specialistLabel: "Specialty",
     chooseSpecialty: "Choose a specialty",
-    insuranceLabel: "Insurance Plan",
-    chooseInsurance: "Choose your insurance",
-    checkStatusButton: "Check Status",
-    footerText:
-      "This MVP is a prototype for improving patient follow-up and care navigation.",
-    resultsHeroTitle: "Your Referral Results",
-    approvedReferral: "Approved Referral",
-    statusLabel: "Status",
-    approvedStatus: "Approved",
-    summarySpecialtyLabel: "Specialty",
-    summaryInsuranceLabel: "Insurance",
-    chooseDoctor: "Choose Your Doctor",
-    selectDate: "Select an Appointment Date",
-    availableTimes: "Available Times",
-    bookAppointment: "Book the Appointment",
-    chooseDoctorFirstAlert: "Please choose a doctor first.",
-    remember: "Remember",
-    reminderText:
-      "Bring your insurance card, ID, and referral confirmation details if available.",
-    appointmentConfirmed: "Appointment Confirmed",
-    modalThankYou:
-      "Thank you for confirming your first appointment with your specialist doctor. Below are your appointment details:",
-    specialty: "Specialty:",
-    doctor: "Doctor:",
-    date: "Date:",
-    time: "Time:",
-    seeYouSoon: "See you soon.",
     cardiologyName: "Cardiology",
     dermatologyName: "Dermatology",
     gynecologyName: "Gynecology",
     infectiousDiseaseName: "Infectious Disease",
     endocrinologyName: "Endocrinology",
+    insuranceLabel: "Insurance Plan",
+    chooseInsurance: "Choose your insurance",
+    metroplusName: "MetroPlus",
+    aetnaName: "Aetna",
+    medicaidName: "Medicaid",
+    checkStatusButton: "See Next Steps",
+    chooseSpecialtyAndInsuranceAlert:
+      "Please choose a specialty and insurance.",
+    footerText:
+      "This MVP is a prototype for improving patient follow-up and care navigation.",
+    resultsHeroTitle: "Your Referral Results",
+    approvedReferral: "Referral Approved",
+    statusLabel: "Status",
+    approvedStatus: "Approved",
+    summarySpecialtyLabel: "Specialty",
+    summaryInsuranceLabel: "Insurance",
+    chooseDoctor: "Choose a Doctor",
+    selectDate: "Choose an Appointment Date",
+    availableTimes: "Choose a Time",
+    bookAppointment: "Book Appointment",
+    chooseDoctorFirstAlert: "Please choose a doctor first.",
+    remember: "Remember",
+    reminderText:
+      "Bring your insurance card, photo ID, and referral details if you have them.",
+    appointmentConfirmed: "Appointment Confirmed",
+    modalThankYou:
+      "Your appointment is confirmed. Here are the details:",
+    specialty: "Specialty:",
+    doctor: "Doctor:",
+    date: "Date:",
+    time: "Time:",
+    seeYouSoon: "See you soon.",
   },
   es: {
     pageTitle: "Próximo paso para el referido",
@@ -51,17 +56,27 @@ const translations = {
     chooseLanguage: "Elija el idioma",
     heroTitle: "Próximo paso para el referido",
     heroTagline:
-      "Conozca con claridad los próximos pasos después de aprobado su referido: rápido y sencillo.",
+      "Conozca con claridad los próximos pasos después de su referido, de forma rápida y sencilla.",
     heroDescription:
-      "Una herramienta sencilla que le ayuda a saber qué hacer cuando tiene referidos aprobados.",
+      "Una herramienta sencilla para ayudarle a saber qué hacer después de que se apruebe un referido.",
     checkReferralHeading: "Consulte su referido",
     checkReferralHelper:
-      "Elija el tipo especialista y siga el paso paso.",
-    specialistLabel: "Tipo de especialista",
-    chooseSpecialty: "Especialistas disponibles",
+      "Elija su especialidad y su seguro para ver los próximos pasos.",
+    specialistLabel: "Especialidad",
+    chooseSpecialty: "Elija una especialidad",
+    cardiologyName: "Cardiología",
+    dermatologyName: "Dermatología",
+    gynecologyName: "Ginecología",
+    infectiousDiseaseName: "Enfermedades infecciosas",
+    endocrinologyName: "Endocrinología",
     insuranceLabel: "Plan de seguro",
     chooseInsurance: "Elija su seguro",
-    checkStatusButton: "Ver estado",
+    metroplusName: "MetroPlus",
+    aetnaName: "Aetna",
+    medicaidName: "Medicaid",
+    checkStatusButton: "Ver próximos pasos",
+    chooseSpecialtyAndInsuranceAlert:
+      "Por favor, elija una especialidad y un seguro.",
     footerText:
       "Este prototipo ayuda a mejorar el autocuidado en el paciente y su navegación en el sistema de salud cuando cuenta con referidos aprobados.",
     resultsHeroTitle: "Resultados de su referido",
@@ -70,70 +85,134 @@ const translations = {
     approvedStatus: "Aprobado",
     summarySpecialtyLabel: "Especialidad",
     summaryInsuranceLabel: "Seguro",
-    chooseDoctor: "Elija a su médico",
+    chooseDoctor: "Elija un médico",
     selectDate: "Elija la fecha de la cita",
-    availableTimes: "Horarios disponibles",
-    bookAppointment: "Reservar la cita",
+    availableTimes: "Elija la hora",
+    bookAppointment: "Reservar cita",
     chooseDoctorFirstAlert: "Primero elija a un médico.",
     remember: "Recuerde",
     reminderText:
-      "Lleve su tarjeta de seguro, identificación y, si los tiene, los datos de confirmación del referido.",
+      "Traiga su tarjeta de seguro, una identificación con foto y los detalles del referido si los tiene.",
     appointmentConfirmed: "Cita confirmada",
     modalThankYou:
-      "Gracias por confirmar su primera cita con el especialista. A continuación, los detalles de su cita:",
+      "Su cita está confirmada. Aquí tiene los detalles:",
     specialty: "Especialidad:",
     doctor: "Médico:",
     date: "Fecha:",
     time: "Hora:",
-    seeYouSoon: "Nos vemos pronto!.",
-    cardiologyName: "Cardiología",
-    dermatologyName: "Dermatología",
-    gynecologyName: "Ginecología",
-    infectiousDiseaseName: "Enfermedades infecciosas",
-    endocrinologyName: "Endocrinología",
+    seeYouSoon: "Nos vemos pronto.",
   },
   zh: {
     pageTitle: "转诊下一步",
     resultsPageTitle: "转诊结果",
     chooseLanguage: "选择语言",
     heroTitle: "转诊下一步",
-    heroTagline: "转诊后清楚知道下一步该怎么做——又快又简单。",
+    heroTagline: "转诊获批后，清楚了解下一步，又快又简单。",
     heroDescription:
-      "帮助患者在转诊获批后，了解接下来需要做什么的简单工具。",
+      "一个帮助患者在转诊获批后了解下一步该怎么做的简单工具。",
     checkReferralHeading: "查询您的转诊",
-    checkReferralHelper: "请选择转诊类型以查看下一步。",
-    specialistLabel: "专科类型",
+    checkReferralHelper: "请选择专科和保险以查看后续步骤。",
+    specialistLabel: "专科",
     chooseSpecialty: "请选择专科",
-    insuranceLabel: "保险计划",
-    chooseInsurance: "请选择您的保险",
-    checkStatusButton: "查询状态",
-    footerText: "本原型用于改善患者随访与就医指引体验。",
-    resultsHeroTitle: "您的转诊结果",
-    approvedReferral: "转诊已批准",
-    statusLabel: "状态",
-    approvedStatus: "已批准",
-    summarySpecialtyLabel: "专科",
-    summaryInsuranceLabel: "保险",
-    chooseDoctor: "选择您的医生",
-    selectDate: "选择预约日期",
-    availableTimes: "可预约时段",
-    bookAppointment: "确认预约",
-    chooseDoctorFirstAlert: "请先选择医生。",
-    remember: "温馨提示",
-    reminderText:
-      "请携带保险卡、身份证件，如有转诊确认信息也请一并带上。",
-    appointmentConfirmed: "预约已确认",
-    modalThankYou:
-      "感谢您确认与专科医生的首次预约。以下是您的预约详情：",
-    specialty: "专科：",
-    doctor: "医生：",
-    date: "日期：",
-    time: "时间：",
-    seeYouSoon: "期待与您见面。",
     cardiologyName: "心脏科",
     dermatologyName: "皮肤科",
     gynecologyName: "妇科",
     infectiousDiseaseName: "感染科",
     endocrinologyName: "内分泌科",
+    insuranceLabel: "保险计划",
+    chooseInsurance: "请选择您的保险",
+    metroplusName: "MetroPlus",
+    aetnaName: "Aetna",
+    medicaidName: "Medicaid",
+    checkStatusButton: "查看后续步骤",
+    chooseSpecialtyAndInsuranceAlert: "请选择专科和保险。",
+    footerText: "本原型用于改善患者随访与就医指引体验。",
+    resultsHeroTitle: "您的转诊结果",
+    approvedReferral: "转诊已获批准",
+    statusLabel: "状态",
+    approvedStatus: "已批准",
+    summarySpecialtyLabel: "专科",
+    summaryInsuranceLabel: "保险",
+    chooseDoctor: "选择医生",
+    selectDate: "选择预约日期",
+    availableTimes: "选择时间",
+    bookAppointment: "预约挂号",
+    chooseDoctorFirstAlert: "请先选择医生。",
+    remember: "温馨提示",
+    reminderText:
+      "请携带保险卡、带照片的身份证件，以及转诊信息（如有）。",
+    appointmentConfirmed: "预约已确认",
+    modalThankYou:
+      "您的预约已确认。以下是详细信息：",
+    specialty: "专科：",
+    doctor: "医生：",
+    date: "日期：",
+    time: "时间：",
+    seeYouSoon: "期待与您见面。",
+  },
+};
+
+const appI18n = {
+  languageStorageKey: "selectedLanguage",
+  defaultLanguage: "en",
+  localeByLanguage: {
+    en: "en-US",
+    es: "es-ES",
+    zh: "zh-CN",
+  },
+
+  getLanguage() {
+    const savedLanguage = localStorage.getItem(this.languageStorageKey);
+
+    if (savedLanguage && translations[savedLanguage]) {
+      return savedLanguage;
+    }
+
+    return this.defaultLanguage;
+  },
+
+  saveLanguage(language) {
+    const nextLanguage = translations[language] ? language : this.defaultLanguage;
+
+    localStorage.setItem(this.languageStorageKey, nextLanguage);
+    return nextLanguage;
+  },
+
+  getTranslations(language) {
+    return translations[language] || translations[this.defaultLanguage];
+  },
+
+  getLocale(language) {
+    return this.localeByLanguage[language] || this.localeByLanguage[this.defaultLanguage];
+  },
+
+  applyTranslations(language, root = document) {
+    const pageTranslations = this.getTranslations(language);
+
+    root.querySelectorAll("[data-i18n]").forEach((element) => {
+      const translationKey = element.dataset.i18n;
+      const translatedText = pageTranslations[translationKey];
+
+      if (translatedText) {
+        element.textContent = translatedText;
+      }
+    });
+
+    root.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+      const translationKey = element.dataset.i18nAriaLabel;
+      const translatedText = pageTranslations[translationKey];
+
+      if (translatedText) {
+        element.setAttribute("aria-label", translatedText);
+      }
+    });
+
+    document.documentElement.lang = language;
+  },
+
+  syncLanguageSelect(selectElement, language) {
+    if (selectElement) {
+      selectElement.value = language;
+    }
   },
 };
