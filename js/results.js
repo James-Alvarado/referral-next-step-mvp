@@ -1,4 +1,5 @@
 const pageElements = {
+  topBar: document.querySelector(".top-bar"),
   languageSelect: document.getElementById("languageSelect"),
   referralSummary: document.getElementById("resultInfo"),
   providerList: document.getElementById("providerList"),
@@ -33,6 +34,14 @@ const specialtyLabelKeys = {
   gynecology: "gynecologyName",
   "infectious-disease": "infectiousDiseaseName",
   endocrinology: "endocrinologyName",
+};
+
+const specialtyAcronyms = {
+  cardiology: "CARD",
+  dermatology: "DERM",
+  gynecology: "GYN",
+  "infectious-disease": "ID",
+  endocrinology: "ENDO",
 };
 
 const insuranceLabelKeys = {
@@ -171,6 +180,10 @@ function getSelectedInsuranceLabel() {
   return getPageText()[labelKey] || "";
 }
 
+function getSelectedSpecialtyAcronym() {
+  return specialtyAcronyms[referralDetails.specialty] || "";
+}
+
 function getSelectedProviders() {
   return (
     providersByReferral[referralDetails.specialty]?.[referralDetails.insurance] || []
@@ -237,6 +250,7 @@ function resetDateAndTimeSelection() {
 
 function renderProviderOptions() {
   const providers = getSelectedProviders();
+  const specialtyAcronym = getSelectedSpecialtyAcronym();
 
   pageElements.providerList.innerHTML = "";
 
@@ -247,7 +261,7 @@ function renderProviderOptions() {
     providerButton.type = "button";
     providerButton.className = "provider-card";
     providerButton.innerHTML = `
-      <strong>${provider.name}</strong>
+      <strong>${specialtyAcronym} | ${provider.name}</strong>
       <span>${provider.location}</span>
     `;
 
@@ -373,6 +387,16 @@ function closeModalWhenOverlayIsClicked(event) {
   }
 }
 
+function updateTopBarOnScroll() {
+  const hasScrolled = window.scrollY > 12;
+  const maxScrollForFade = 260;
+  const scrollRatio = Math.min(window.scrollY / maxScrollForFade, 1);
+  const topBarOpacity = 0.94 - scrollRatio * 0.22;
+
+  pageElements.topBar.classList.toggle("scrolled", hasScrolled);
+  pageElements.topBar.style.setProperty("--top-bar-opacity", topBarOpacity.toFixed(2));
+}
+
 function initializeResultsPage() {
   if (!referralDetails.specialty || !referralDetails.insurance) {
     window.location.href = "index.html";
@@ -384,6 +408,7 @@ function initializeResultsPage() {
   renderProviderOptions();
   applyLanguageToPage(currentLanguage);
   showBookButtonIfReady();
+  updateTopBarOnScroll();
 
   pageElements.languageSelect.addEventListener("change", handleLanguageChange);
   pageElements.bookAppointmentButton.addEventListener("click", openBookingModal);
@@ -392,6 +417,7 @@ function initializeResultsPage() {
     "click",
     closeModalWhenOverlayIsClicked
   );
+  window.addEventListener("scroll", updateTopBarOnScroll, { passive: true });
 }
 
 initializeResultsPage();
