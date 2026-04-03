@@ -7,58 +7,127 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-    <header class="hero">
-        <div class="container">
-          <div class="language-picker">
-            <label for="languageSelect" class="sr-only" data-i18n="chooseLanguage">Choose language</label>
-            <div class="language-select-control">
-              <span class="language-icon" aria-hidden="true">🌐</span>
-              <select
-                id="languageSelect"
-                name="language"
-                aria-label="Choose language"
-                data-i18n-aria-label="chooseLanguage"
-              >
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="zh">中文</option>
-              </select>
-            </div>
+    <header class="top-bar">
+      <div class="container top-bar-content">
+        <a href="index.html" class="brand-area">
+          <span class="brand-mark">+</span>
+          <span class="brand-text">Care Navigator</span>
+        </a>
+        <div class="language-picker">
+          <label for="languageSelect" class="sr-only" data-i18n="chooseLanguage">Choose language</label>
+          <div class="language-select-control">
+            <span class="language-icon" aria-hidden="true">🌐</span>
+            <select
+              id="languageSelect"
+              name="language"
+              aria-label="Choose language"
+              data-i18n-aria-label="chooseLanguage"
+            >
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="zh">中文</option>
+            </select>
           </div>
-          <h1 data-i18n="heroTitle">Referral Next Step</h1>
-          <p class="tagline" data-i18n="heroTagline">
-            Get clear next steps after your referral, fast and simple.
-          </p>
-          
-          <p data-i18n="heroDescription">
-            A simple tool to help patients know what to do after a referral is approved.
-          </p>
         </div>
-      </header>
+      </div>
+    </header>
+
+    <header class="hero">
+      <div class="container">
+        <h1 data-i18n="heroTitle">Care Navigator</h1>
+        <p class="tagline" data-i18n="heroTagline">
+          Clear next steps after your referral, made simple.
+        </p>
+      </div>
+    </header>
 
     <main>
         <section class="form-section">
         <div class="container">
           <h2 data-i18n="checkReferralHeading">Check Your Referral</h2>
-          <p data-i18n="checkReferralHelper">Choose your specialty and insurance to see your next steps.</p>
+          <p data-i18n="checkReferralHelper">Choose your specialty and insurance plan to see your next steps.</p>
       
-          <label for="specialty" data-i18n="specialistLabel">Specialty</label>
-          <select id="specialty">
-            <option value="" data-i18n="chooseSpecialty">Choose a specialty</option>
-            <option value="cardiology" data-i18n="cardiologyName">Cardiology</option>
-            <option value="dermatology" data-i18n="dermatologyName">Dermatology</option>
-            <option value="gynecology" data-i18n="gynecologyName">Gynecology</option>
-            <option value="infectious-disease" data-i18n="infectiousDiseaseName">Infectious Disease</option>
-            <option value="endocrinology" data-i18n="endocrinologyName">Endocrinology</option>
-          </select>
+          <div class="form-field">
+            <label
+              id="specialtyLabel"
+              class="field-label"
+              for="specialtyTrigger"
+              data-i18n="specialistLabel"
+            >
+              Specialty
+            </label>
+            <div class="custom-dropdown" data-dropdown data-placeholder-i18n="chooseSpecialty">
+              <button
+                type="button"
+                class="dropdown-trigger is-placeholder"
+                id="specialtyTrigger"
+                role="combobox"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-labelledby="specialtyLabel specialtyTriggerText"
+                aria-controls="specialtyOptions"
+              >
+                <span class="dropdown-trigger-text" id="specialtyTriggerText">Choose a specialty</span>
+                <span class="dropdown-trigger-icon" aria-hidden="true">⌄</span>
+              </button>
+              <div class="dropdown-panel" id="specialtyOptions" role="listbox" hidden>
+                <button type="button" class="dropdown-option" role="option" data-value="cardiology" aria-selected="false">
+                  <span data-i18n="cardiologyName">Cardiology</span>
+                </button>
+                <button type="button" class="dropdown-option" role="option" data-value="dermatology" aria-selected="false">
+                  <span data-i18n="dermatologyName">Dermatology</span>
+                </button>
+                <button type="button" class="dropdown-option" role="option" data-value="gynecology" aria-selected="false">
+                  <span data-i18n="gynecologyName">Gynecology</span>
+                </button>
+                <button type="button" class="dropdown-option" role="option" data-value="infectious-disease" aria-selected="false">
+                  <span data-i18n="infectiousDiseaseName">Infectious Disease</span>
+                </button>
+                <button type="button" class="dropdown-option" role="option" data-value="endocrinology" aria-selected="false">
+                  <span data-i18n="endocrinologyName">Endocrinology</span>
+                </button>
+              </div>
+              <input type="hidden" id="specialty" name="specialty" value="" />
+            </div>
+          </div>
 
-          <label for="insurance" data-i18n="insuranceLabel">Insurance Plan</label>
-          <select id="insurance">
-            <option value="" data-i18n="chooseInsurance">Choose your insurance</option>
-            <option value="metroplus" data-i18n="metroplusName">MetroPlus</option>
-            <option value="aetna" data-i18n="aetnaName">Aetna</option>
-            <option value="medicaid" data-i18n="medicaidName">Medicaid</option>
-          </select>
+          <div class="form-field">
+            <label
+              id="insuranceLabel"
+              class="field-label"
+              for="insuranceTrigger"
+              data-i18n="insuranceLabel"
+            >
+              Insurance Plan
+            </label>
+            <div class="custom-dropdown" data-dropdown data-placeholder-i18n="chooseInsurance">
+              <button
+                type="button"
+                class="dropdown-trigger is-placeholder"
+                id="insuranceTrigger"
+                role="combobox"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-labelledby="insuranceLabel insuranceTriggerText"
+                aria-controls="insuranceOptions"
+              >
+                <span class="dropdown-trigger-text" id="insuranceTriggerText">Choose an insurance plan</span>
+                <span class="dropdown-trigger-icon" aria-hidden="true">⌄</span>
+              </button>
+              <div class="dropdown-panel" id="insuranceOptions" role="listbox" hidden>
+                <button type="button" class="dropdown-option" role="option" data-value="metroplus" aria-selected="false">
+                  <span data-i18n="metroplusName">MetroPlus</span>
+                </button>
+                <button type="button" class="dropdown-option" role="option" data-value="aetna" aria-selected="false">
+                  <span data-i18n="aetnaName">Aetna</span>
+                </button>
+                <button type="button" class="dropdown-option" role="option" data-value="medicaid" aria-selected="false">
+                  <span data-i18n="medicaidName">Medicaid</span>
+                </button>
+              </div>
+              <input type="hidden" id="insurance" name="insurance" value="" />
+            </div>
+          </div>
       
           <button id="checkReferralBtn" data-i18n="checkStatusButton">See Next Steps</button>
         </div>
@@ -68,7 +137,7 @@
 
     <footer>
         <div class="container">
-          <p data-i18n="footerText">This MVP is a prototype for improving patient follow-up and care navigation.</p>
+          <p data-i18n="footerText">This prototype is designed to make follow-up care easier to understand.</p>
         </div>
       </footer>
       
