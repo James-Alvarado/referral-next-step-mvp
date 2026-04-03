@@ -1,424 +1,397 @@
-const languageSelect = document.getElementById("languageSelect");
-const resultInfo = document.getElementById("resultInfo");
-const providerList = document.getElementById("providerList");
-const calendarGrid = document.getElementById("calendarGrid");
-const timeSlots = document.getElementById("timeSlots");
-const bookAppointmentBtn = document.getElementById("bookAppointmentBtn");
-const calendarSection = document.querySelector(".calendar-section");
-const timesSection = document.querySelector(".times-section");
-const bookingSection = document.querySelector(".booking-section");
+const pageElements = {
+  languageSelect: document.getElementById("languageSelect"),
+  referralSummary: document.getElementById("resultInfo"),
+  providerList: document.getElementById("providerList"),
+  dateList: document.getElementById("calendarGrid"),
+  timeList: document.getElementById("timeSlots"),
+  bookAppointmentButton: document.getElementById("bookAppointmentBtn"),
+  calendarSection: document.querySelector(".calendar-section"),
+  timeSection: document.querySelector(".times-section"),
+  bookingSection: document.querySelector(".booking-section"),
+  bookingModal: document.getElementById("bookingModal"),
+  closeModalButton: document.getElementById("closeModalBtn"),
+  modalSpecialty: document.getElementById("modalSpecialty"),
+  modalDoctor: document.getElementById("modalDoctor"),
+  modalDate: document.getElementById("modalDate"),
+  modalTime: document.getElementById("modalTime"),
+};
 
-const bookingModal = document.getElementById("bookingModal");
-const closeModalBtn = document.getElementById("closeModalBtn");
+const referralDetails = {
+  specialty: localStorage.getItem("specialty"),
+  insurance: localStorage.getItem("insurance"),
+};
 
-const modalSpecialty = document.getElementById("modalSpecialty");
-const modalDoctor = document.getElementById("modalDoctor");
-const modalDate = document.getElementById("modalDate");
-const modalTime = document.getElementById("modalTime");
+const selectedAppointment = {
+  doctor: "",
+  dateKey: "",
+  time: "",
+};
 
-const specialty = localStorage.getItem("specialty");
-const insurance = localStorage.getItem("insurance");
-
-const LANGUAGE_STORAGE_KEY = "selectedLanguage";
-const DEFAULT_LANGUAGE = "en";
-
-let currentLanguage = DEFAULT_LANGUAGE;
-
-bookingModal.classList.add("hidden");
-bookAppointmentBtn.classList.add("hidden");
-
-const specialtyTranslationKeys = {
+const specialtyLabelKeys = {
   cardiology: "cardiologyName",
   dermatology: "dermatologyName",
   gynecology: "gynecologyName",
   "infectious-disease": "infectiousDiseaseName",
-  endocrinology: "endocrinologyName"
+  endocrinology: "endocrinologyName",
 };
 
-const insuranceLabels = {
-  metroplus: "MetroPlus",
-  aetna: "Aetna",
-  medicaid: "Medicaid"
+const insuranceLabelKeys = {
+  metroplus: "metroplusName",
+  aetna: "aetnaName",
+  medicaid: "medicaidName",
 };
 
-const providerData = {
+const providersByReferral = {
   cardiology: {
     metroplus: [
       { name: "Dr. Ana Rivera", location: "Harlem, Manhattan" },
       { name: "Dr. James Carter", location: "Bushwick, Brooklyn" },
-      { name: "Dr. Sofia Morales", location: "Chelsea, Manhattan" }
+      { name: "Dr. Sofia Morales", location: "Chelsea, Manhattan" },
     ],
     aetna: [
       { name: "Dr. Kevin Brooks", location: "Astoria, Queens" },
       { name: "Dr. Laura Chen", location: "Washington Heights, Manhattan" },
-      { name: "Dr. Miguel Santos", location: "Downtown Brooklyn, Brooklyn" }
+      { name: "Dr. Miguel Santos", location: "Downtown Brooklyn, Brooklyn" },
     ],
     medicaid: [
       { name: "Dr. Tiana Lewis", location: "South Bronx, Bronx" },
       { name: "Dr. Eric Hall", location: "Jamaica, Queens" },
-      { name: "Dr. Daniela Ruiz", location: "Sunset Park, Brooklyn" }
-    ]
+      { name: "Dr. Daniela Ruiz", location: "Sunset Park, Brooklyn" },
+    ],
   },
   dermatology: {
     metroplus: [
       { name: "Dr. Emily Torres", location: "Harlem, Manhattan" },
       { name: "Dr. Rachel Kim", location: "Bushwick, Brooklyn" },
-      { name: "Dr. Daniel Flores", location: "Chelsea, Manhattan" }
+      { name: "Dr. Daniel Flores", location: "Chelsea, Manhattan" },
     ],
     aetna: [
       { name: "Dr. Nina Patel", location: "Astoria, Queens" },
       { name: "Dr. Marcus Green", location: "Upper East Side, Manhattan" },
-      { name: "Dr. Elena Cruz", location: "Williamsburg, Brooklyn" }
+      { name: "Dr. Elena Cruz", location: "Williamsburg, Brooklyn" },
     ],
     medicaid: [
       { name: "Dr. Olivia Reed", location: "South Bronx, Bronx" },
       { name: "Dr. Jason Perez", location: "Corona, Queens" },
-      { name: "Dr. Lucia Gomez", location: "Flatbush, Brooklyn" }
-    ]
+      { name: "Dr. Lucia Gomez", location: "Flatbush, Brooklyn" },
+    ],
   },
   gynecology: {
     metroplus: [
       { name: "Dr. Isabel Vega", location: "Harlem, Manhattan" },
       { name: "Dr. Karen White", location: "Bushwick, Brooklyn" },
-      { name: "Dr. Monica Reyes", location: "Chelsea, Manhattan" }
+      { name: "Dr. Monica Reyes", location: "Chelsea, Manhattan" },
     ],
     aetna: [
       { name: "Dr. Priya Shah", location: "Astoria, Queens" },
       { name: "Dr. Amanda Scott", location: "Midtown, Manhattan" },
-      { name: "Dr. Paula Jimenez", location: "Park Slope, Brooklyn" }
+      { name: "Dr. Paula Jimenez", location: "Park Slope, Brooklyn" },
     ],
     medicaid: [
       { name: "Dr. Selena Ortiz", location: "South Bronx, Bronx" },
       { name: "Dr. Brittany Cole", location: "Jamaica, Queens" },
-      { name: "Dr. Marisol Peña", location: "Bay Ridge, Brooklyn" }
-    ]
+      { name: "Dr. Marisol Peña", location: "Bay Ridge, Brooklyn" },
+    ],
   },
   "infectious-disease": {
     metroplus: [
       { name: "Dr. Victor Alvarez", location: "Harlem, Manhattan" },
       { name: "Dr. Hannah Lee", location: "Bushwick, Brooklyn" },
-      { name: "Dr. Camila Soto", location: "Chelsea, Manhattan" }
+      { name: "Dr. Camila Soto", location: "Chelsea, Manhattan" },
     ],
     aetna: [
       { name: "Dr. Steven Park", location: "Astoria, Queens" },
       { name: "Dr. Melissa Grant", location: "Upper West Side, Manhattan" },
-      { name: "Dr. José Ramirez", location: "Downtown Brooklyn, Brooklyn" }
+      { name: "Dr. José Ramirez", location: "Downtown Brooklyn, Brooklyn" },
     ],
     medicaid: [
       { name: "Dr. Natalie Young", location: "South Bronx, Bronx" },
       { name: "Dr. Kevin Martinez", location: "Elmhurst, Queens" },
-      { name: "Dr. Rosa Delgado", location: "Crown Heights, Brooklyn" }
-    ]
+      { name: "Dr. Rosa Delgado", location: "Crown Heights, Brooklyn" },
+    ],
   },
   endocrinology: {
     metroplus: [
       { name: "Dr. Teresa Hill", location: "Harlem, Manhattan" },
       { name: "Dr. Bianca Lopez", location: "Bushwick, Brooklyn" },
-      { name: "Dr. Adrian Romero", location: "Chelsea, Manhattan" }
+      { name: "Dr. Adrian Romero", location: "Chelsea, Manhattan" },
     ],
     aetna: [
       { name: "Dr. Helen Wright", location: "Astoria, Queens" },
       { name: "Dr. Omar Hassan", location: "Midtown East, Manhattan" },
-      { name: "Dr. Carolina Diaz", location: "Fort Greene, Brooklyn" }
+      { name: "Dr. Carolina Diaz", location: "Fort Greene, Brooklyn" },
     ],
     medicaid: [
       { name: "Dr. Jasmine Foster", location: "South Bronx, Bronx" },
       { name: "Dr. Leo Torres", location: "Jackson Heights, Queens" },
-      { name: "Dr. Andrea Castillo", location: "East Flatbush, Brooklyn" }
-    ]
-  }
+      { name: "Dr. Andrea Castillo", location: "East Flatbush, Brooklyn" },
+    ],
+  },
 };
 
-const availableAppointments = [
+const appointmentDateKeys = [
   "2026-04-08",
   "2026-04-10",
   "2026-04-12",
   "2026-04-15",
-  "2026-04-18"
+  "2026-04-18",
 ];
 
-const timeData = {
+const appointmentTimesByDate = {
   "2026-04-08": ["9:00 AM", "11:00 AM", "2:00 PM"],
   "2026-04-10": ["10:00 AM", "1:00 PM", "3:30 PM"],
   "2026-04-12": ["8:30 AM", "12:00 PM", "4:00 PM"],
   "2026-04-15": ["9:30 AM", "1:30 PM", "5:00 PM"],
-  "2026-04-18": ["10:30 AM", "2:30 PM", "4:30 PM"]
+  "2026-04-18": ["10:30 AM", "2:30 PM", "4:30 PM"],
 };
 
-let selectedDate = "";
-let selectedTime = "";
-let selectedDoctor = "";
+let currentLanguage = appI18n.getLanguage();
 
-function clearStoredAppointment() {
-  localStorage.removeItem("appointmentDate");
-  localStorage.removeItem("appointmentTime");
-  localStorage.removeItem("appointmentDoctor");
+function getPageText() {
+  return appI18n.getTranslations(currentLanguage);
 }
 
-function scrollSectionIntoCenter(section) {
-  if (!section) {
-    return;
-  }
+function getSelectedSpecialtyLabel() {
+  const labelKey = specialtyLabelKeys[referralDetails.specialty];
 
-  const sectionRect = section.getBoundingClientRect();
-  const targetTop =
-    window.scrollY + sectionRect.top - (window.innerHeight - sectionRect.height) / 2;
-
-  window.scrollTo({
-    top: Math.max(0, targetTop),
-    behavior: "smooth"
-  });
-}
-
-function getSavedLanguage() {
-  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-
-  if (savedLanguage && translations[savedLanguage]) {
-    return savedLanguage;
-  }
-
-  return DEFAULT_LANGUAGE;
-}
-
-function getCurrentTranslations(language) {
-  return translations[language] || translations[DEFAULT_LANGUAGE];
-}
-
-function applyTranslations(language) {
-  const currentTranslations = getCurrentTranslations(language);
-  const translatableElements = document.querySelectorAll("[data-i18n]");
-  const ariaLabelElements = document.querySelectorAll("[data-i18n-aria-label]");
-
-  document.documentElement.lang = language;
-
-  translatableElements.forEach((element) => {
-    const translationKey = element.dataset.i18n;
-    const translatedText = currentTranslations[translationKey];
-
-    if (translatedText) {
-      element.textContent = translatedText;
-    }
-  });
-
-  ariaLabelElements.forEach((element) => {
-    const translationKey = element.dataset.i18nAriaLabel;
-    const translatedText = currentTranslations[translationKey];
-
-    if (translatedText) {
-      element.setAttribute("aria-label", translatedText);
-    }
-  });
-}
-
-function getSpecialtyName(language) {
-  const currentTranslations = getCurrentTranslations(language);
-  const translationKey = specialtyTranslationKeys[specialty];
-
-  if (!translationKey) {
+  if (!labelKey) {
     return "";
   }
 
-  return currentTranslations[translationKey] || "";
+  return getPageText()[labelKey] || "";
 }
 
-function getInsuranceName() {
-  return insuranceLabels[insurance] || "";
+function getSelectedInsuranceLabel() {
+  const labelKey = insuranceLabelKeys[referralDetails.insurance];
+
+  if (!labelKey) {
+    return "";
+  }
+
+  return getPageText()[labelKey] || "";
 }
 
-function formatAppointmentDate(dateKey, language) {
+function getSelectedProviders() {
+  return (
+    providersByReferral[referralDetails.specialty]?.[referralDetails.insurance] || []
+  );
+}
+
+function formatAppointmentDate(dateKey) {
   const [year, month, day] = dateKey.split("-").map(Number);
-  const appointmentDate = new Date(year, month - 1, day);
-  const localeMap = {
-    en: "en-US",
-    es: "es-ES",
-    zh: "zh-CN"
-  };
-  const locale = localeMap[language] || localeMap.en;
+  const date = new Date(year, month - 1, day);
 
-  return new Intl.DateTimeFormat(locale, {
+  return new Intl.DateTimeFormat(appI18n.getLocale(currentLanguage), {
     weekday: "short",
     month: "long",
-    day: "numeric"
-  }).format(appointmentDate);
+    day: "numeric",
+  }).format(date);
 }
 
-function renderResultSummary() {
-  const currentTranslations = getCurrentTranslations(currentLanguage);
-  const specialtyName = getSpecialtyName(currentLanguage);
-  const insuranceName = getInsuranceName();
-
-  resultInfo.textContent =
-    `${currentTranslations.statusLabel}: ${currentTranslations.approvedStatus} | ` +
-    `${currentTranslations.summarySpecialtyLabel}: ${specialtyName} | ` +
-    `${currentTranslations.summaryInsuranceLabel}: ${insuranceName}`;
+function getDoctorLabel(provider) {
+  return `${provider.name} - ${provider.location}`;
 }
 
-function renderProviders() {
-  const selectedProviders = providerData[specialty]?.[insurance] || [];
+function showBookButtonIfReady() {
+  const isTimeSelected = Boolean(selectedAppointment.time);
+  pageElements.bookAppointmentButton.classList.toggle("hidden", !isTimeSelected);
+}
 
-  providerList.innerHTML = "";
+function updateModalContent() {
+  pageElements.modalSpecialty.textContent = getSelectedSpecialtyLabel();
+  pageElements.modalDoctor.textContent = selectedAppointment.doctor;
+  pageElements.modalDate.textContent = selectedAppointment.dateKey
+    ? formatAppointmentDate(selectedAppointment.dateKey)
+    : "";
+  pageElements.modalTime.textContent = selectedAppointment.time;
+}
 
-  selectedProviders.forEach((provider) => {
-    const providerCard = document.createElement("button");
-    providerCard.classList.add("provider-card");
-    providerCard.type = "button";
-    providerCard.innerHTML = `
+function updateReferralSummary() {
+  const pageText = getPageText();
+
+  pageElements.referralSummary.textContent =
+    `${pageText.statusLabel}: ${pageText.approvedStatus} | ` +
+    `${pageText.summarySpecialtyLabel}: ${getSelectedSpecialtyLabel()} | ` +
+    `${pageText.summaryInsuranceLabel}: ${getSelectedInsuranceLabel()}`;
+}
+
+function scrollToCenteredSection(sectionElement) {
+  if (!sectionElement) {
+    return;
+  }
+
+  const sectionRect = sectionElement.getBoundingClientRect();
+  const centeredTop =
+    window.scrollY + sectionRect.top - (window.innerHeight - sectionRect.height) / 2;
+
+  window.scrollTo({
+    top: Math.max(0, centeredTop),
+    behavior: "smooth",
+  });
+}
+
+function resetDateAndTimeSelection() {
+  selectedAppointment.dateKey = "";
+  selectedAppointment.time = "";
+}
+
+function renderProviderOptions() {
+  const providers = getSelectedProviders();
+
+  pageElements.providerList.innerHTML = "";
+
+  providers.forEach((provider) => {
+    const doctorLabel = getDoctorLabel(provider);
+    const providerButton = document.createElement("button");
+
+    providerButton.type = "button";
+    providerButton.className = "provider-card";
+    providerButton.innerHTML = `
       <strong>${provider.name}</strong>
       <span>${provider.location}</span>
     `;
 
-    if (selectedDoctor === `${provider.name} - ${provider.location}`) {
-      providerCard.classList.add("selected-option");
+    if (selectedAppointment.doctor === doctorLabel) {
+      providerButton.classList.add("selected-option");
     }
 
-    providerCard.addEventListener("click", function () {
-      selectedDoctor = `${provider.name} - ${provider.location}`;
-      selectedDate = "";
-      selectedTime = "";
-      clearStoredAppointment();
+    providerButton.addEventListener("click", function () {
+      selectedAppointment.doctor = doctorLabel;
+      resetDateAndTimeSelection();
 
-      document.querySelectorAll(".provider-card").forEach((card) => {
-        card.classList.remove("selected-option");
-      });
-
-      providerCard.classList.add("selected-option");
-      calendarGrid.classList.remove("disabled-section");
-      bookAppointmentBtn.classList.add("hidden");
-      renderCalendar();
-      renderTimeSlots();
-      updateModalDetails();
-      scrollSectionIntoCenter(calendarSection);
+      renderProviderOptions();
+      renderDateOptions();
+      renderTimeOptions();
+      updateModalContent();
+      showBookButtonIfReady();
+      scrollToCenteredSection(pageElements.calendarSection);
     });
 
-    providerList.appendChild(providerCard);
+    pageElements.providerList.appendChild(providerButton);
   });
 }
 
-function renderCalendar() {
-  calendarGrid.innerHTML = "";
+function renderDateOptions() {
+  pageElements.dateList.innerHTML = "";
+  pageElements.dateList.classList.toggle(
+    "disabled-section",
+    !selectedAppointment.doctor
+  );
 
-  if (!selectedDoctor) {
-    calendarGrid.classList.add("disabled-section");
-  } else {
-    calendarGrid.classList.remove("disabled-section");
-  }
+  appointmentDateKeys.forEach((dateKey) => {
+    const dateButton = document.createElement("button");
 
-  availableAppointments.forEach((dateKey) => {
-    const dateBtn = document.createElement("button");
-    dateBtn.type = "button";
-    dateBtn.textContent = formatAppointmentDate(dateKey, currentLanguage);
-    dateBtn.classList.add("calendar-date");
+    dateButton.type = "button";
+    dateButton.className = "calendar-date";
+    dateButton.textContent = formatAppointmentDate(dateKey);
 
-    if (selectedDate === dateKey) {
-      dateBtn.classList.add("selected-option");
+    if (selectedAppointment.dateKey === dateKey) {
+      dateButton.classList.add("selected-option");
     }
 
-    dateBtn.addEventListener("click", function () {
-      if (!selectedDoctor) {
-        const currentTranslations = getCurrentTranslations(currentLanguage);
-        alert(currentTranslations.chooseDoctorFirstAlert);
+    dateButton.addEventListener("click", function () {
+      if (!selectedAppointment.doctor) {
+        alert(getPageText().chooseDoctorFirstAlert);
         return;
       }
 
-      selectedDate = dateKey;
-      selectedTime = "";
-      localStorage.removeItem("appointmentDate");
-      localStorage.removeItem("appointmentTime");
-      localStorage.removeItem("appointmentDoctor");
+      selectedAppointment.dateKey = dateKey;
+      selectedAppointment.time = "";
 
-      renderCalendar();
-      renderTimeSlots();
-      updateModalDetails();
-      bookAppointmentBtn.classList.add("hidden");
-      scrollSectionIntoCenter(timesSection);
+      renderDateOptions();
+      renderTimeOptions();
+      updateModalContent();
+      showBookButtonIfReady();
+      scrollToCenteredSection(pageElements.timeSection);
     });
 
-    calendarGrid.appendChild(dateBtn);
+    pageElements.dateList.appendChild(dateButton);
   });
 }
 
-function renderTimeSlots() {
-  timeSlots.innerHTML = "";
+function renderTimeOptions() {
+  pageElements.timeList.innerHTML = "";
 
-  if (!selectedDate) {
+  if (!selectedAppointment.dateKey) {
     return;
   }
 
-  const availableTimes = timeData[selectedDate] || [];
+  const availableTimes = appointmentTimesByDate[selectedAppointment.dateKey] || [];
 
   availableTimes.forEach((time) => {
-    const timeBtn = document.createElement("button");
-    timeBtn.type = "button";
-    timeBtn.textContent = time;
-    timeBtn.classList.add("time-slot");
+    const timeButton = document.createElement("button");
 
-    if (selectedTime === time) {
-      timeBtn.classList.add("selected-option");
+    timeButton.type = "button";
+    timeButton.className = "time-slot";
+    timeButton.textContent = time;
+
+    if (selectedAppointment.time === time) {
+      timeButton.classList.add("selected-option");
     }
 
-    timeBtn.addEventListener("click", function () {
-      selectedTime = time;
+    timeButton.addEventListener("click", function () {
+      selectedAppointment.time = time;
 
-      localStorage.setItem("appointmentDate", selectedDate);
-      localStorage.setItem("appointmentTime", selectedTime);
-      localStorage.setItem("appointmentDoctor", selectedDoctor);
-
-      renderTimeSlots();
-      updateModalDetails();
-      bookAppointmentBtn.classList.remove("hidden");
-      scrollSectionIntoCenter(bookingSection);
+      renderTimeOptions();
+      updateModalContent();
+      showBookButtonIfReady();
+      scrollToCenteredSection(pageElements.bookingSection);
     });
 
-    timeSlots.appendChild(timeBtn);
+    pageElements.timeList.appendChild(timeButton);
   });
 }
 
-function updateModalDetails() {
-  modalSpecialty.textContent = getSpecialtyName(currentLanguage);
-  modalDoctor.textContent = localStorage.getItem("appointmentDoctor") || selectedDoctor;
+function applyLanguageToPage(language) {
+  currentLanguage = appI18n.saveLanguage(language);
 
-  if (selectedDate) {
-    modalDate.textContent = formatAppointmentDate(selectedDate, currentLanguage);
-  } else {
-    modalDate.textContent = "";
-  }
+  appI18n.syncLanguageSelect(pageElements.languageSelect, currentLanguage);
+  appI18n.applyTranslations(currentLanguage);
 
-  modalTime.textContent = localStorage.getItem("appointmentTime") || selectedTime;
+  updateReferralSummary();
+  renderDateOptions();
+  renderTimeOptions();
+  updateModalContent();
 }
 
-function setLanguage(language) {
-  const nextLanguage = translations[language] ? language : DEFAULT_LANGUAGE;
-
-  currentLanguage = nextLanguage;
-  localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
-  languageSelect.value = nextLanguage;
-
-  applyTranslations(nextLanguage);
-  renderResultSummary();
-  renderCalendar();
-  renderTimeSlots();
-  updateModalDetails();
+function handleLanguageChange() {
+  applyLanguageToPage(pageElements.languageSelect.value);
 }
 
-renderProviders();
-currentLanguage = getSavedLanguage();
-setLanguage(currentLanguage);
+function openBookingModal() {
+  updateModalContent();
+  pageElements.bookingModal.classList.remove("hidden");
+}
 
-languageSelect.addEventListener("change", function () {
-  setLanguage(languageSelect.value);
-});
+function closeBookingModal() {
+  pageElements.bookingModal.classList.add("hidden");
+}
 
-bookAppointmentBtn.addEventListener("click", function () {
-  updateModalDetails();
-  bookingModal.classList.remove("hidden");
-});
-
-closeModalBtn.addEventListener("click", function () {
-  bookingModal.classList.add("hidden");
-});
-
-bookingModal.addEventListener("click", function (event) {
-  if (event.target === bookingModal) {
-    bookingModal.classList.add("hidden");
+function closeModalWhenOverlayIsClicked(event) {
+  if (event.target === pageElements.bookingModal) {
+    closeBookingModal();
   }
-});
+}
+
+function initializeResultsPage() {
+  if (!referralDetails.specialty || !referralDetails.insurance) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  pageElements.bookingModal.classList.add("hidden");
+
+  renderProviderOptions();
+  applyLanguageToPage(currentLanguage);
+  showBookButtonIfReady();
+
+  pageElements.languageSelect.addEventListener("change", handleLanguageChange);
+  pageElements.bookAppointmentButton.addEventListener("click", openBookingModal);
+  pageElements.closeModalButton.addEventListener("click", closeBookingModal);
+  pageElements.bookingModal.addEventListener(
+    "click",
+    closeModalWhenOverlayIsClicked
+  );
+}
+
+initializeResultsPage();
