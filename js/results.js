@@ -1,11 +1,12 @@
-const specialty = localStorage.getItem("specialty");
-const insurance = localStorage.getItem("insurance");
-
+const languageSelect = document.getElementById("languageSelect");
 const resultInfo = document.getElementById("resultInfo");
 const providerList = document.getElementById("providerList");
 const calendarGrid = document.getElementById("calendarGrid");
 const timeSlots = document.getElementById("timeSlots");
 const bookAppointmentBtn = document.getElementById("bookAppointmentBtn");
+const calendarSection = document.querySelector(".calendar-section");
+const timesSection = document.querySelector(".times-section");
+const bookingSection = document.querySelector(".booking-section");
 
 const bookingModal = document.getElementById("bookingModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
@@ -15,15 +16,23 @@ const modalDoctor = document.getElementById("modalDoctor");
 const modalDate = document.getElementById("modalDate");
 const modalTime = document.getElementById("modalTime");
 
+const specialty = localStorage.getItem("specialty");
+const insurance = localStorage.getItem("insurance");
+
+const LANGUAGE_STORAGE_KEY = "selectedLanguage";
+const DEFAULT_LANGUAGE = "en";
+
+let currentLanguage = DEFAULT_LANGUAGE;
+
 bookingModal.classList.add("hidden");
 bookAppointmentBtn.classList.add("hidden");
 
-const specialtyLabels = {
-  cardiology: "Cardiology",
-  dermatology: "Dermatology",
-  gynecology: "Gynecology",
-  "infectious-disease": "Infectious Disease",
-  endocrinology: "Endocrinology"
+const specialtyTranslationKeys = {
+  cardiology: "cardiologyName",
+  dermatology: "dermatologyName",
+  gynecology: "gynecologyName",
+  "infectious-disease": "infectiousDiseaseName",
+  endocrinology: "endocrinologyName"
 };
 
 const insuranceLabels = {
@@ -31,8 +40,6 @@ const insuranceLabels = {
   aetna: "Aetna",
   medicaid: "Medicaid"
 };
-
-resultInfo.textContent = `Status: Approved | Specialty: ${specialtyLabels[specialty]} | Insurance: ${insuranceLabels[insurance]}`;
 
 const providerData = {
   cardiology: {
@@ -123,132 +130,286 @@ const providerData = {
 };
 
 const availableAppointments = [
-  { weekday: "Wed", month: "April", day: 8 },
-  { weekday: "Fri", month: "April", day: 10 },
-  { weekday: "Sun", month: "April", day: 12 },
-  { weekday: "Wed", month: "April", day: 15 },
-  { weekday: "Sat", month: "April", day: 18 }
+  "2026-04-08",
+  "2026-04-10",
+  "2026-04-12",
+  "2026-04-15",
+  "2026-04-18"
 ];
 
 const timeData = {
-  "Wed, April 8th": ["9:00 AM", "11:00 AM", "2:00 PM"],
-  "Fri, April 10th": ["10:00 AM", "1:00 PM", "3:30 PM"],
-  "Sun, April 12th": ["8:30 AM", "12:00 PM", "4:00 PM"],
-  "Wed, April 15th": ["9:30 AM", "1:30 PM", "5:00 PM"],
-  "Sat, April 18th": ["10:30 AM", "2:30 PM", "4:30 PM"]
+  "2026-04-08": ["9:00 AM", "11:00 AM", "2:00 PM"],
+  "2026-04-10": ["10:00 AM", "1:00 PM", "3:30 PM"],
+  "2026-04-12": ["8:30 AM", "12:00 PM", "4:00 PM"],
+  "2026-04-15": ["9:30 AM", "1:30 PM", "5:00 PM"],
+  "2026-04-18": ["10:30 AM", "2:30 PM", "4:30 PM"]
 };
 
 let selectedDate = "";
 let selectedTime = "";
 let selectedDoctor = "";
 
-function getOrdinal(day) {
-  if (day > 3 && day < 21) return `${day}th`;
+function clearStoredAppointment() {
+  localStorage.removeItem("appointmentDate");
+  localStorage.removeItem("appointmentTime");
+  localStorage.removeItem("appointmentDoctor");
+}
 
-  switch (day % 10) {
-    case 1:
-      return `${day}st`;
-    case 2:
-      return `${day}nd`;
-    case 3:
-      return `${day}rd`;
-    default:
-      return `${day}th`;
+function scrollSectionIntoCenter(section) {
+  if (!section) {
+    return;
   }
+
+  const sectionRect = section.getBoundingClientRect();
+  const targetTop =
+    window.scrollY + sectionRect.top - (window.innerHeight - sectionRect.height) / 2;
+
+  window.scrollTo({
+    top: Math.max(0, targetTop),
+    behavior: "smooth"
+  });
 }
 
-function formatAppointmentDate(appointment) {
-  return `${appointment.weekday}, ${appointment.month} ${getOrdinal(appointment.day)}`;
+function getSavedLanguage() {
+  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+
+  if (savedLanguage && translations[savedLanguage]) {
+    return savedLanguage;
+  }
+
+  return DEFAULT_LANGUAGE;
 }
 
-const selectedProviders = providerData[specialty][insurance];
+function getCurrentTranslations(language) {
+  return translations[language] || translations[DEFAULT_LANGUAGE];
+}
 
-selectedProviders.forEach((provider) => {
-  const providerCard = document.createElement("button");
-  providerCard.classList.add("provider-card");
+function applyTranslations(language) {
+  const currentTranslations = getCurrentTranslations(language);
+  const translatableElements = document.querySelectorAll("[data-i18n]");
+  const ariaLabelElements = document.querySelectorAll("[data-i18n-aria-label]");
 
-  providerCard.innerHTML = `
-    <strong>${provider.name}</strong>
-    <span>${provider.location}</span>
-  `;
+  document.documentElement.lang = language;
 
-  providerCard.addEventListener("click", function () {
-    selectedDoctor = `${provider.name} - ${provider.location}`;
+  translatableElements.forEach((element) => {
+    const translationKey = element.dataset.i18n;
+    const translatedText = currentTranslations[translationKey];
 
-    document.querySelectorAll(".provider-card").forEach((card) => {
-      card.classList.remove("selected-option");
-    });
-
-    providerCard.classList.add("selected-option");
-
-    calendarGrid.classList.remove("disabled-section");
+    if (translatedText) {
+      element.textContent = translatedText;
+    }
   });
 
-  providerList.appendChild(providerCard);
-});
+  ariaLabelElements.forEach((element) => {
+    const translationKey = element.dataset.i18nAriaLabel;
+    const translatedText = currentTranslations[translationKey];
 
-calendarGrid.classList.add("disabled-section");
+    if (translatedText) {
+      element.setAttribute("aria-label", translatedText);
+    }
+  });
+}
 
+function getSpecialtyName(language) {
+  const currentTranslations = getCurrentTranslations(language);
+  const translationKey = specialtyTranslationKeys[specialty];
 
-availableAppointments.forEach((appointment) => {
-  const formattedDate = formatAppointmentDate(appointment);
+  if (!translationKey) {
+    return "";
+  }
 
-  const dateBtn = document.createElement("button");
-  dateBtn.textContent = formattedDate;
-  dateBtn.classList.add("calendar-date");
+  return currentTranslations[translationKey] || "";
+}
 
-  dateBtn.addEventListener("click", function () {
-    if (!selectedDoctor) {
-      alert("Please choose a doctor first.");
-      return;
+function getInsuranceName() {
+  return insuranceLabels[insurance] || "";
+}
+
+function formatAppointmentDate(dateKey, language) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const appointmentDate = new Date(year, month - 1, day);
+  const localeMap = {
+    en: "en-US",
+    es: "es-ES",
+    zh: "zh-CN"
+  };
+  const locale = localeMap[language] || localeMap.en;
+
+  return new Intl.DateTimeFormat(locale, {
+    weekday: "short",
+    month: "long",
+    day: "numeric"
+  }).format(appointmentDate);
+}
+
+function renderResultSummary() {
+  const currentTranslations = getCurrentTranslations(currentLanguage);
+  const specialtyName = getSpecialtyName(currentLanguage);
+  const insuranceName = getInsuranceName();
+
+  resultInfo.textContent =
+    `${currentTranslations.statusLabel}: ${currentTranslations.approvedStatus} | ` +
+    `${currentTranslations.summarySpecialtyLabel}: ${specialtyName} | ` +
+    `${currentTranslations.summaryInsuranceLabel}: ${insuranceName}`;
+}
+
+function renderProviders() {
+  const selectedProviders = providerData[specialty]?.[insurance] || [];
+
+  providerList.innerHTML = "";
+
+  selectedProviders.forEach((provider) => {
+    const providerCard = document.createElement("button");
+    providerCard.classList.add("provider-card");
+    providerCard.type = "button";
+    providerCard.innerHTML = `
+      <strong>${provider.name}</strong>
+      <span>${provider.location}</span>
+    `;
+
+    if (selectedDoctor === `${provider.name} - ${provider.location}`) {
+      providerCard.classList.add("selected-option");
     }
 
-    selectedDate = formattedDate;
-    selectedTime = "";
+    providerCard.addEventListener("click", function () {
+      selectedDoctor = `${provider.name} - ${provider.location}`;
+      selectedDate = "";
+      selectedTime = "";
+      clearStoredAppointment();
 
-    document.querySelectorAll(".calendar-date").forEach((btn) => {
-      btn.classList.remove("selected-option");
-    });
-
-    dateBtn.classList.add("selected-option");
-
-    timeSlots.innerHTML = "";
-    bookAppointmentBtn.classList.add("hidden");
-
-    timeData[formattedDate].forEach((time) => {
-      const timeBtn = document.createElement("button");
-      timeBtn.textContent = time;
-      timeBtn.classList.add("time-slot");
-
-      timeBtn.addEventListener("click", function () {
-        selectedTime = time;
-
-        document.querySelectorAll(".time-slot").forEach((btn) => {
-          btn.classList.remove("selected-option");
-        });
-
-        timeBtn.classList.add("selected-option");
-
-        localStorage.setItem("appointmentDate", selectedDate);
-        localStorage.setItem("appointmentTime", selectedTime);
-        localStorage.setItem("appointmentDoctor", selectedDoctor);
-
-        bookAppointmentBtn.classList.remove("hidden");
+      document.querySelectorAll(".provider-card").forEach((card) => {
+        card.classList.remove("selected-option");
       });
 
-      timeSlots.appendChild(timeBtn);
+      providerCard.classList.add("selected-option");
+      calendarGrid.classList.remove("disabled-section");
+      bookAppointmentBtn.classList.add("hidden");
+      renderCalendar();
+      renderTimeSlots();
+      updateModalDetails();
+      scrollSectionIntoCenter(calendarSection);
     });
-  });
 
-  calendarGrid.appendChild(dateBtn);
+    providerList.appendChild(providerCard);
+  });
+}
+
+function renderCalendar() {
+  calendarGrid.innerHTML = "";
+
+  if (!selectedDoctor) {
+    calendarGrid.classList.add("disabled-section");
+  } else {
+    calendarGrid.classList.remove("disabled-section");
+  }
+
+  availableAppointments.forEach((dateKey) => {
+    const dateBtn = document.createElement("button");
+    dateBtn.type = "button";
+    dateBtn.textContent = formatAppointmentDate(dateKey, currentLanguage);
+    dateBtn.classList.add("calendar-date");
+
+    if (selectedDate === dateKey) {
+      dateBtn.classList.add("selected-option");
+    }
+
+    dateBtn.addEventListener("click", function () {
+      if (!selectedDoctor) {
+        const currentTranslations = getCurrentTranslations(currentLanguage);
+        alert(currentTranslations.chooseDoctorFirstAlert);
+        return;
+      }
+
+      selectedDate = dateKey;
+      selectedTime = "";
+      localStorage.removeItem("appointmentDate");
+      localStorage.removeItem("appointmentTime");
+      localStorage.removeItem("appointmentDoctor");
+
+      renderCalendar();
+      renderTimeSlots();
+      updateModalDetails();
+      bookAppointmentBtn.classList.add("hidden");
+      scrollSectionIntoCenter(timesSection);
+    });
+
+    calendarGrid.appendChild(dateBtn);
+  });
+}
+
+function renderTimeSlots() {
+  timeSlots.innerHTML = "";
+
+  if (!selectedDate) {
+    return;
+  }
+
+  const availableTimes = timeData[selectedDate] || [];
+
+  availableTimes.forEach((time) => {
+    const timeBtn = document.createElement("button");
+    timeBtn.type = "button";
+    timeBtn.textContent = time;
+    timeBtn.classList.add("time-slot");
+
+    if (selectedTime === time) {
+      timeBtn.classList.add("selected-option");
+    }
+
+    timeBtn.addEventListener("click", function () {
+      selectedTime = time;
+
+      localStorage.setItem("appointmentDate", selectedDate);
+      localStorage.setItem("appointmentTime", selectedTime);
+      localStorage.setItem("appointmentDoctor", selectedDoctor);
+
+      renderTimeSlots();
+      updateModalDetails();
+      bookAppointmentBtn.classList.remove("hidden");
+      scrollSectionIntoCenter(bookingSection);
+    });
+
+    timeSlots.appendChild(timeBtn);
+  });
+}
+
+function updateModalDetails() {
+  modalSpecialty.textContent = getSpecialtyName(currentLanguage);
+  modalDoctor.textContent = localStorage.getItem("appointmentDoctor") || selectedDoctor;
+
+  if (selectedDate) {
+    modalDate.textContent = formatAppointmentDate(selectedDate, currentLanguage);
+  } else {
+    modalDate.textContent = "";
+  }
+
+  modalTime.textContent = localStorage.getItem("appointmentTime") || selectedTime;
+}
+
+function setLanguage(language) {
+  const nextLanguage = translations[language] ? language : DEFAULT_LANGUAGE;
+
+  currentLanguage = nextLanguage;
+  localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+  languageSelect.value = nextLanguage;
+
+  applyTranslations(nextLanguage);
+  renderResultSummary();
+  renderCalendar();
+  renderTimeSlots();
+  updateModalDetails();
+}
+
+renderProviders();
+currentLanguage = getSavedLanguage();
+setLanguage(currentLanguage);
+
+languageSelect.addEventListener("change", function () {
+  setLanguage(languageSelect.value);
 });
 
 bookAppointmentBtn.addEventListener("click", function () {
-  modalSpecialty.textContent = specialtyLabels[specialty];
-  modalDoctor.textContent = localStorage.getItem("appointmentDoctor");
-  modalDate.textContent = localStorage.getItem("appointmentDate");
-  modalTime.textContent = localStorage.getItem("appointmentTime");
-
+  updateModalDetails();
   bookingModal.classList.remove("hidden");
 });
 

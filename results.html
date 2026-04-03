@@ -2,14 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Referral Results</title>
+  <title data-i18n="resultsPageTitle">Referral Results</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
 <header class="hero">
   <div class="container">
-    <h1>Your Referral Results</h1>
+    <div class="language-picker">
+      <label for="languageSelect" class="sr-only" data-i18n="chooseLanguage">Choose language</label>
+      <div class="language-select-control">
+        <span class="language-icon" aria-hidden="true">🌐</span>
+        <select
+          id="languageSelect"
+          name="language"
+          aria-label="Choose language"
+          data-i18n-aria-label="chooseLanguage"
+        >
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="zh">中文</option>
+        </select>
+      </div>
+    </div>
+    <h1 data-i18n="resultsHeroTitle">Your Referral Results</h1>
   </div>
 </header>
 
@@ -17,7 +33,7 @@
   <section class="result-section">
     <div class="container">
       <div class="result-card">
-        <h2>Approved Referral</h2>
+        <h2 data-i18n="approvedReferral">Approved Referral</h2>
         <p id="resultInfo"></p>
       </div>
     </div>
@@ -25,57 +41,52 @@
 
   <section class="providers-section">
     <div class="container">
-      <h2>Choose Your Doctor</h2>
+      <h2 data-i18n="chooseDoctor">Choose Your Doctor</h2>
       <div id="providerList" class="provider-options"></div>
     </div>
   </section>
 
   <section class="calendar-section">
     <div class="container">
-      <h2>Select an Appointment Date</h2>
+      <h2 data-i18n="selectDate">Select an Appointment Date</h2>
       <div id="calendarGrid" class="calendar-grid"></div>
     </div>
   </section>
 
   <section class="times-section">
     <div class="container">
-      <h2>Available Times</h2>
+      <h2 data-i18n="availableTimes">Available Times</h2>
       <div id="timeSlots" class="time-slots"></div>
     </div>
   </section>
 
   <section class="booking-section">
     <div class="container">
-      <button id="bookAppointmentBtn" class="hidden">Book the Appointment</button>
+      <button id="bookAppointmentBtn" class="hidden" data-i18n="bookAppointment">Book the Appointment</button>
     </div>
   </section>
 
-  <section class="reminder-section">
-    <div class="container">
-      <h2>Remember</h2>
-      <p>Bring your insurance card, ID, and referral confirmation details if available.</p>
-    </div>
-  </section>
 </main>
 
 <div id="bookingModal" class="modal hidden">
   <div class="modal-content">
     <button id="closeModalBtn" class="close-modal-btn">×</button>
-    <h2>Appointment Confirmed</h2>
-    <p>Thank you for confirming your first appointment with your specialist doctor. Below are your appointment details:</p>
+    <h2 data-i18n="appointmentConfirmed">Appointment Confirmed</h2>
+    <p data-i18n="modalThankYou">Thank you for confirming your first appointment with your specialist doctor. Below are your appointment details:</p>
 
-    <p><strong>Specialty:</strong> <span id="modalSpecialty"></span></p>
-    <p><strong>Doctor:</strong> <span id="modalDoctor"></span></p>
-    <p><strong>Date:</strong> <span id="modalDate"></span></p>
-    <p><strong>Time:</strong> <span id="modalTime"></span></p>
+    <p><strong data-i18n="specialty">Specialty:</strong> <span id="modalSpecialty"></span></p>
+    <p><strong data-i18n="doctor">Doctor:</strong> <span id="modalDoctor"></span></p>
+    <p><strong data-i18n="date">Date:</strong> <span id="modalDate"></span></p>
+    <p><strong data-i18n="time">Time:</strong> <span id="modalTime"></span></p>
 
-    <h3>Remember</h3>
-    <p>Bring your insurance card, ID, and referral confirmation details if available.</p>
+    <h3 data-i18n="remember">Remember</h3>
+    <p data-i18n="reminderText">Bring your insurance card, ID, and referral confirmation details if available.</p>
 
-    <p class="see-you-soon">See you soon.</p>
+    <p class="see-you-soon" data-i18n="seeYouSoon">See you soon.</p>
   </div>
 </div>
 
+<script src="js/translation.js"></script>
 <script src="js/results.js"></script>
 </body>
 </html>

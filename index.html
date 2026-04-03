@@ -3,18 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Referral Next Step</title>
+  <title data-i18n="pageTitle">Referral Next Step</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
     <header class="hero">
         <div class="container">
-          <h1>Referral Next Step</h1>
-          <p class="tagline">
+          <div class="language-picker">
+            <label for="languageSelect" class="sr-only">Choose language</label>
+            <div class="language-select-control">
+              <span class="language-icon" aria-hidden="true">🌐</span>
+              <select id="languageSelect" name="language" aria-label="Choose language">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+              </select>
+            </div>
+          </div>
+          <h1 data-i18n="heroTitle">Referral Next Step</h1>
+          <p class="tagline" data-i18n="heroTagline">
             Get clear next steps after your referral — fast and simple.
           </p>
           
-          <p>
+          <p data-i18n="heroDescription">
             A simple tool that helps patients understand what to do after a referral is approved.
           </p>
         </div>
@@ -23,12 +34,12 @@
     <main>
         <section class="form-section">
         <div class="container">
-          <h2>Check Your Referral</h2>
-          <p>Select your referral type to see the next step.</p>
+          <h2 data-i18n="checkReferralHeading">Check Your Referral</h2>
+          <p data-i18n="checkReferralHelper">Select your referral type to see the next step.</p>
       
-          <label for="specialty">Specialist Type</label>
+          <label for="specialty" data-i18n="specialistLabel">Specialist Type</label>
           <select id="specialty">
-            <option value="">Choose a specialty</option>
+            <option value="" data-i18n="chooseSpecialty">Choose a specialty</option>
             <option value="cardiology">Cardiology</option>
             <option value="dermatology">Dermatology</option>
             <option value="gynecology">Gynecology</option>
@@ -36,15 +47,15 @@
             <option value="endocrinology">Endocrinology</option>
           </select>
 
-          <label for="insurance">Insurance Plan</label>
+          <label for="insurance" data-i18n="insuranceLabel">Insurance Plan</label>
           <select id="insurance">
-            <option value="">Choose your insurance</option>
+            <option value="" data-i18n="chooseInsurance">Choose your insurance</option>
             <option value="metroplus">MetroPlus</option>
             <option value="aetna">Aetna</option>
             <option value="medicaid">Medicaid</option>
           </select>
       
-          <button id="checkReferralBtn">Check Status</button>
+          <button id="checkReferralBtn" data-i18n="checkStatusButton">Check Status</button>
         </div>
       </section>
 
@@ -52,10 +63,11 @@
 
     <footer>
         <div class="container">
-          <p>This MVP is a prototype for improving patient follow-up and care navigation.</p>
+          <p data-i18n="footerText">This MVP is a prototype for improving patient follow-up and care navigation.</p>
         </div>
       </footer>
       
+      <script src="js/translation.js"></script>
       <script src="js/script.js"></script>
 </body>
 </html>
